@@ -239,7 +239,7 @@ class WeatherEntity(Entity):
     _forecast_listeners: dict[
         Literal["daily", "hourly", "twice_daily"],
         list[Callable[[list[dict[str, Any]] | None], None]],
-    ]
+    ] = {"daily": [], "hourly": [], "twice_daily": []}
 
     _weather_option_temperature_unit: str | None = None
     _weather_option_pressure_unit: str | None = None
@@ -304,7 +304,6 @@ class WeatherEntity(Entity):
     async def async_internal_added_to_hass(self) -> None:
         """Call when the weather entity is added to hass."""
         await super().async_internal_added_to_hass()
-        self._forecast_listeners = {"daily": [], "hourly": [], "twice_daily": []}
         if not self.registry_entry:
             return
         self.async_registry_entry_updated()
