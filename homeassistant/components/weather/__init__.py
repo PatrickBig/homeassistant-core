@@ -251,6 +251,7 @@ class WeatherEntity(Entity):
         """Post initialisation processing."""
         super().__init_subclass__(**kwargs)
         _reported = False
+        _reported_forecast = False
         if any(
             method in cls.__dict__
             for method in (
@@ -301,9 +302,9 @@ class WeatherEntity(Entity):
                     report_issue,
                 )
         if any(method in cls.__dict__ for method in ("_attr_forecast", "forecast")):
-            if _reported is False:
+            if _reported_forecast is False:
                 module = inspect.getmodule(cls)
-                _reported = True
+                _reported_forecast = True
                 if (
                     module
                     and module.__file__
